@@ -1,0 +1,36 @@
+[
+    {
+        "name": "Basic Character",
+        "description": "Essential character traits and backstory setup",
+        "variables": {
+            "character_name": "Character",
+            "character_age": "unknown",
+            "character_personality": "friendly and curious",
+            "character_background": "A traveler from distant lands",
+            "character_goal": "Find the truth"
+        }
+    },
+    {
+        "name": "Fantasy Character",
+        "description": "Fantasy RPG character with magical abilities",
+        "variables": {
+            "character_name": "Hero",
+            "character_race": "Elf",
+            "character_class": "Mage",
+            "character_magic_type": "Arcane",
+            "character_weapon": "Staff",
+            "character_weakness": "Fire"
+        }
+    },
+    {
+        "name": "Sci-Fi Character",
+        "description": "Science fiction character with tech background",
+        "variables": {
+            "character_name": "Pilot",
+            "character_species": "Human",
+            "character_ship": "Stellar Voyager",
+            "character_ai_companion": "ARIA",
+            "character_homeworld": "Earth Prime"
+        }
+    }
+]

@@ -1,0 +1,395 @@
+.mvu-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mvu-popup-dialog {
+    background: #2a2a2a;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.mvu-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #444;
+}
+
+.mvu-popup-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #fff;
+}
+
+.mvu-close-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.mvu-close-btn:hover {
+    color: #fff;
+}
+
+.mvu-popup-tabs {
+    display: flex;
+    background: #222;
+    padding: 0 10px;
+}
+
+.mvu-tab {
+    background: none;
+    border: none;
+    color: #888;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+}
+
+.mvu-tab:hover {
+    color: #ccc;
+}
+
+.mvu-tab.active {
+    color: #4a9eff;
+    border-bottom-color: #4a9eff;
+}
+
+.mvu-popup-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 20px;
+}
+
+.mvu-tab-content {
+    display: none;
+}
+
+.mvu-tab-content.active {
+    display: block;
+}
+
+.mvu-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.mvu-input {
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    flex: 1;
+}
+
+.mvu-input:focus {
+    outline: none;
+    border-color: #4a9eff;
+}
+
+.mvu-btn {
+    background: #4a4a4a;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.mvu-btn:hover {
+    background: #5a5a5a;
+}
+
+.mvu-btn-primary {
+    background: #4a9eff;
+}
+
+.mvu-btn-primary:hover {
+    background: #3a8eef;
+}
+
+.mvu-btn-danger {
+    background: #f44336;
+}
+
+.mvu-btn-danger:hover {
+    background: #d32f2f;
+}
+
+.mvu-var-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mvu-var-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+.mvu-var-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.mvu-var-name {
+    font-weight: bold;
+    color: #4a9eff;
+    font-family: monospace;
+    word-break: break-all;
+}
+
+.mvu-var-value {
+    color: #ccc;
+    font-size: 13px;
+    margin-top: 4px;
+    word-break: break-all;
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mvu-var-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 10px;
+}
+
+.mvu-empty-state {
+    text-align: center;
+    color: #666;
+    padding: 40px;
+    font-style: italic;
+}
+
+.mvu-template-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mvu-template-card {
+    background: #333;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.mvu-template-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.mvu-template-name {
+    font-weight: bold;
+    color: #fff;
+}
+
+.mvu-template-desc {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.mvu-template-meta {
+    font-size: 12px;
+    color: #666;
+}
+
+.mvu-guide-content h3 {
+    color: #4a9eff;
+    margin-top: 0;
+}
+
+.mvu-guide-content h4 {
+    color: #fff;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.mvu-guide-content p {
+    color: #ccc;
+    line-height: 1.6;
+}
+
+.mvu-guide-content ol, .mvu-guide-content ul {
+    color: #ccc;
+    padding-left: 20px;
+}
+
+.mvu-guide-content li {
+    margin-bottom: 8px;
+}
+
+.mvu-code-block {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.mvu-code-block code {
+    display: block;
+    color: #0f0;
+    font-family: monospace;
+    margin-bottom: 5px;
+}
+
+.mvu-settings-group {
+    margin-bottom: 20px;
+}
+
+.mvu-settings-group h4 {
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #444;
+}
+
+.mvu-setting-item {
+    margin-bottom: 10px;
+}
+
+.mvu-setting-item label {
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mvu-preset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.mvu-preset-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.mvu-var-modal-dialog {
+    background: #2a2a2a;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.mvu-floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #4a9eff, #0066cc);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(74, 158, 255, 0.4);
+    z-index: 9999;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mvu-floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(74, 158, 255, 0.6);
+}
+
+.mvu-floating-btn-icon {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+.mvu-var-modal-content {
+    padding: 15px 20px;
+}
+
+.mvu-form-group {
+    margin-bottom: 15px;
+}
+
+.mvu-form-group label {
+    display: block;
+    color: #ccc;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.mvu-popup-footer {
+    padding: 10px 20px;
+    border-top: 1px solid #444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mvu-status-text {
+    color: #888;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .mvu-popup-dialog {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .mvu-tab {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+    
+    .mvu-toolbar {
+        flex-direction: column;
+    }
+    
+    .mvu-var-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .mvu-var-actions {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}

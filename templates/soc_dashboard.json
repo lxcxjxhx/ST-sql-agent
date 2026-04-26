@@ -1,0 +1,212 @@
+{
+    "name": "SOC Dashboard",
+    "description": "安全运营中心态势感知仪表盘",
+    "schema": {
+        "运营环境": {
+            "当前日期": {
+                "type": "string",
+                "default": "第1天",
+                "description": "当前游戏/故事日期"
+            },
+            "当前时间": {
+                "type": "string",
+                "default": "08:00",
+                "description": "当前时间"
+            },
+            "威胁等级": {
+                "type": "number",
+                "default": 2,
+                "min": 0,
+                "max": 10,
+                "description": "威胁等级 0-10"
+            },
+            "SOC状态": {
+                "type": "enum",
+                "values": ["正常", "忙碌", "紧急", "维护中"],
+                "default": "正常",
+                "description": "SOC运行状态"
+            },
+            "告警积压数": {
+                "type": "number",
+                "default": 5,
+                "min": 0,
+                "description": "待处理告警数量"
+            }
+        },
+        "安全事件": {
+            "type": "record",
+            "item": {
+                "类型": {
+                    "type": "string",
+                    "default": "",
+                    "description": "事件类型"
+                },
+                "来源": {
+                    "type": "string",
+                    "default": "",
+                    "description": "事件来源"
+                },
+                "描述": {
+                    "type": "string",
+                    "default": "",
+                    "description": "事件描述"
+                },
+                "状态": {
+                    "type": "enum",
+                    "values": ["待研判", "分析中", "已确认", "处置中", "已闭环"],
+                    "default": "待研判",
+                    "description": "事件状态"
+                },
+                "威胁评分": {
+                    "type": "number",
+                    "default": 50,
+                    "min": 0,
+                    "max": 100,
+                    "description": "威胁评分 0-100"
+                },
+                "发现时间": {
+                    "type": "string",
+                    "default": "",
+                    "description": "发现时间"
+                },
+                "处置进度": {
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 100,
+                    "description": "处置进度百分比"
+                }
+            }
+        },
+        "资产状态": {
+            "type": "record",
+            "item": {
+                "类型": {
+                    "type": "enum",
+                    "values": ["服务器", "域名", "云资源", "终端", "网络设备", "应用", "其他"],
+                    "default": "服务器",
+                    "description": "资产类型"
+                },
+                "暴露面": {
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 100,
+                    "description": "暴露面评分"
+                },
+                "风险评分": {
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 100,
+                    "description": "风险评分"
+                },
+                "标签": {
+                    "type": "string",
+                    "default": "",
+                    "description": "资产标签"
+                },
+                "最后巡检时间": {
+                    "type": "string",
+                    "default": "未巡检",
+                    "description": "最后巡检时间"
+                }
+            }
+        },
+        "团队状态": {
+            "type": "record",
+            "item": {
+                "角色": {
+                    "type": "enum",
+                    "values": ["分析师", "高级分析师", "事件响应负责人", "漏洞管理工程师", "自动化工程师", "实习生"],
+                    "default": "分析师",
+                    "description": "成员角色"
+                },
+                "状态": {
+                    "type": "enum",
+                    "values": ["在线", "忙碌", "离线", "待命"],
+                    "default": "在线",
+                    "description": "在线状态"
+                },
+                "当前任务": {
+                    "type": "string",
+                    "default": "待分配",
+                    "description": "当前任务"
+                },
+                "疲劳值": {
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 100,
+                    "description": "疲劳值"
+                }
+            }
+        },
+        "运营任务": {
+            "type": "record",
+            "item": {
+                "类型": {
+                    "type": "enum",
+                    "values": ["威胁分析", "漏洞修复", "资产发现", "应急响应", "运营报告", "安全运营", "自动化编排", "AI治理", "其他"],
+                    "default": "其他",
+                    "description": "任务类型"
+                },
+                "优先级": {
+                    "type": "enum",
+                    "values": ["低", "中", "高", "紧急"],
+                    "default": "低",
+                    "description": "优先级"
+                },
+                "进度": {
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 100,
+                    "description": "完成进度百分比"
+                },
+                "负责人": {
+                    "type": "string",
+                    "default": "",
+                    "description": "负责人"
+                },
+                "截止时间": {
+                    "type": "string",
+                    "default": "",
+                    "description": "截止时间"
+                },
+                "备注": {
+                    "type": "string",
+                    "default": "",
+                    "description": "备注"
+                }
+            }
+        }
+    },
+    "regex_patterns": [
+        {
+            "name": "add_threat",
+            "pattern": "(?:发现|检测到|新增).*?(?:威胁|攻击|漏洞)",
+            "action": "add_event",
+            "params": {
+                "类型": "可疑威胁",
+                "威胁评分": 60
+            }
+        },
+        {
+            "name": "set_threat_level",
+            "pattern": "威胁等级[是为]*(\\d+)",
+            "key": "stat_data.运营环境.威胁等级",
+            "transform": "parseInt"
+        },
+        {
+            "name": "update_status",
+            "pattern": "(?:状态|SOC)[是为]*(正常|忙碌|紧急|维护中)",
+            "key": "stat_data.运营环境.SOC状态"
+        }
+    ],
+    "ui_config": {
+        "panel_id": "soc-dashboard-panel",
+        "auto_refresh": true,
+        "refresh_interval": 5000
+    }
+}

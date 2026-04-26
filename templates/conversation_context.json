@@ -1,0 +1,35 @@
+[
+    {
+        "name": "Session Context",
+        "description": "Current conversation session state",
+        "variables": {
+            "session_topic": "",
+            "session_start_time": "",
+            "conversation_turns": "0",
+            "last_discussed": "",
+            "pending_questions": ""
+        }
+    },
+    {
+        "name": "Story Progress",
+        "description": "Track ongoing story/roleplay progress",
+        "variables": {
+            "story_chapter": "1",
+            "story_arc": "introduction",
+            "story_location": "unknown",
+            "story_objects_collected": "",
+            "story_relationships": ""
+        }
+    },
+    {
+        "name": "Task Tracking",
+        "description": "Track tasks and objectives",
+        "variables": {
+            "current_task": "",
+            "task_priority": "medium",
+            "task_deadline": "",
+            "subtasks": "",
+            "completed_tasks": ""
+        }
+    }
+]

@@ -1,0 +1,155 @@
+<div id="mvu-popup-overlay" class="mvu-popup-overlay">
+    <div id="mvu-popup" class="mvu-popup-dialog">
+        <div class="mvu-popup-header">
+            <h2>MVU-SQLite Memory</h2>
+            <button id="mvu-popup-close" class="mvu-close-btn">&times;</button>
+        </div>
+
+        <div class="mvu-popup-tabs">
+            <button class="mvu-tab active" data-tab="variables">Variables</button>
+            <button class="mvu-tab" data-tab="templates">Templates</button>
+            <button class="mvu-tab" data-tab="guide">Guide</button>
+            <button class="mvu-tab" data-tab="settings">Settings</button>
+        </div>
+
+        <div class="mvu-popup-content">
+            <!-- Variables Tab -->
+            <div id="mvu-tab-variables" class="mvu-tab-content active">
+                <div class="mvu-toolbar">
+                    <input type="text" id="mvu-var-search" class="mvu-input" placeholder="Search variables...">
+                    <button id="mvu-add-var" class="mvu-btn">+ Add Variable</button>
+                </div>
+                <div id="mvu-var-list" class="mvu-var-list">
+                    <div class="mvu-empty-state">No variables yet. Add one or apply a template.</div>
+                </div>
+            </div>
+
+            <!-- Templates Tab -->
+            <div id="mvu-tab-templates" class="mvu-tab-content">
+                <div class="mvu-template-categories">
+                    <select id="mvu-template-category" class="mvu-input">
+                        <option value="character_lore">Character Lore</option>
+                        <option value="user_preferences">User Preferences</option>
+                        <option value="conversation_context">Conversation Context</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div id="mvu-template-list" class="mvu-template-list">
+                    <!-- Template cards will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Guide Tab -->
+            <div id="mvu-tab-guide" class="mvu-tab-content">
+                <div class="mvu-guide-content">
+                    <h3>Welcome to MVU-SQLite Memory</h3>
+                    <p>This extension provides hot/cold state management with AI variable extraction and FTS5 memory.</p>
+
+                    <h4>Quick Start</h4>
+                    <ol>
+                        <li><strong>Add Variables:</strong> Click "+ Add Variable" to create a new variable</li>
+                        <li><strong>Apply Templates:</strong> Go to Templates tab and click "Apply" on a template</li>
+                        <li><strong>Search Memory:</strong> Use /search_memory or the search_memory tool</li>
+                        <li><strong>Create Snapshots:</strong> Save current state for later rollback</li>
+                    </ol>
+
+                    <h4>AI Commands</h4>
+                    <div class="mvu-code-block">
+                        <code>/sql SELECT * FROM variable_state</code>
+                        <code>/tables</code>
+                        <code>/memory I prefer blue watches</code>
+                    </div>
+
+                    <h4>Function Tools</h4>
+                    <ul>
+                        <li><code>set_variable</code> - Set a MVU state variable</li>
+                        <li><code>get_variable</code> - Get a MVU state variable</li>
+                        <li><code>get_all_variables</code> - Get all variables</li>
+                        <li><code>search_memory</code> - Search FTS5 memory</li>
+                        <li><code>extract_variables</code> - Extract variables from text</li>
+                        <li><code>create_snapshot</code> - Create a state snapshot</li>
+                    </ul>
+
+                    <h4>Character Integration</h4>
+                    <p>Variables are automatically scoped to the current character. Switch characters to see different variable sets.</p>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="mvu-tab-settings" class="mvu-tab-content">
+                <div class="mvu-settings-group">
+                    <h4>Character Context</h4>
+                    <div class="mvu-setting-item">
+                        <label>Current Character:</label>
+                        <input type="text" id="mvu-character-id" class="mvu-input" value="default" readonly>
+                    </div>
+                </div>
+
+                <div class="mvu-settings-group">
+                    <h4>Sync Settings</h4>
+                    <div class="mvu-setting-item">
+                        <label>
+                            <input type="checkbox" id="mvu-sync-enabled" checked>
+                            Enable auto-sync to SQLite
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mvu-settings-group">
+                    <h4>AI Pipeline</h4>
+                    <div class="mvu-setting-item">
+                        <label>
+                            <input type="checkbox" id="mvu-pipeline-enabled" checked>
+                            Enable auto-extract from chat
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mvu-settings-group">
+                    <h4>Presets</h4>
+                    <div class="mvu-setting-item">
+                        <input type="text" id="mvu-preset-name" class="mvu-input" placeholder="Preset name">
+                        <button id="mvu-save-preset" class="mvu-btn">Save Current</button>
+                    </div>
+                    <div id="mvu-preset-list" class="mvu-preset-list"></div>
+                </div>
+
+                <div class="mvu-settings-group">
+                    <h4>Data Management</h4>
+                    <button id="mvu-clear-all" class="mvu-btn mvu-btn-danger">Clear All Variables</button>
+                    <button id="mvu-export-data" class="mvu-btn">Export Data</button>
+                    <button id="mvu-import-data" class="mvu-btn">Import Data</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mvu-popup-footer">
+            <span id="mvu-status-text">Ready</span>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Variable Modal -->
+<div id="mvu-var-modal" class="mvu-popup-overlay" style="display: none;">
+    <div class="mvu-var-modal-dialog">
+        <div class="mvu-popup-header">
+            <h3 id="mvu-var-modal-title">Add Variable</h3>
+            <button class="mvu-close-btn" onclick="MVU_POPUP.hideVarModal()">&times;</button>
+        </div>
+        <div class="mvu-var-modal-content">
+            <input type="hidden" id="mvu-var-old-key">
+            <div class="mvu-form-group">
+                <label>Variable Name:</label>
+                <input type="text" id="mvu-var-key-input" class="mvu-input" placeholder="variable_name">
+            </div>
+            <div class="mvu-form-group">
+                <label>Value:</label>
+                <textarea id="mvu-var-value-input" class="mvu-input" rows="3" placeholder="Variable value"></textarea>
+            </div>
+        </div>
+        <div class="mvu-popup-footer">
+            <button class="mvu-btn" onclick="MVU_POPUP.hideVarModal()">Cancel</button>
+            <button id="mvu-var-save" class="mvu-btn mvu-btn-primary">Save</button>
+        </div>
+    </div>
+</div>

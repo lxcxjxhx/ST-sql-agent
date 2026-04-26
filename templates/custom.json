@@ -1,0 +1,19 @@
+[
+    {
+        "name": "Empty Template",
+        "description": "Start from scratch - no pre-defined variables",
+        "variables": {
+            "custom_var_1": "",
+            "custom_var_2": "",
+            "custom_var_3": ""
+        }
+    },
+    {
+        "name": "My Custom Template",
+        "description": "Edit this template to create your own",
+        "variables": {
+            "my_variable_1": "",
+            "my_variable_2": ""
+        }
+    }
+]
