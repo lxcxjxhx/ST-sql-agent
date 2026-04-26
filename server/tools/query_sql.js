@@ -1,16 +1,33 @@
-const { query } = require("../sqlite/engine");
-const { validateSQL } = require("../sqlite/guard");
+const { query } = require('../sqlite/engine');
+const { validateSQL, isReadOnly } = require('../sqlite/guard');
 
-async function executeSQL(sql, dbPath) {
-    validateSQL(sql);
+let characterId = 'default';
+
+function setCharacterContext(id) {
+    characterId = id;
+}
+
+async function executeQuery(sql, params = []) {
     try {
-        const result = query(sql, dbPath);
-        return { success: true, data: result };
+        validateSQL(sql);
+
+        const result = query(sql, params);
+
+        return {
+            success: true,
+            isReadOnly: isReadOnly(sql),
+            results: result,
+            rowCount: Array.isArray(result) ? result.length : 1
+        };
     } catch (e) {
-        return { success: false, error: e.message };
+        return {
+            success: false,
+            error: e.message
+        };
     }
 }
 
 module.exports = {
-    executeSQL
+    setCharacterContext,
+    executeQuery
 };

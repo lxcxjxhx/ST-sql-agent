@@ -1,33 +1,33 @@
-.sql-agent-panel {
+.mvu-panel {
     padding: 10px;
     background: #2a2a2a;
     border-radius: 5px;
     margin: 5px 0;
 }
 
-.sql-agent-status {
+.mvu-status {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
 }
 
-.sql-agent-status-indicator {
+.mvu-status-indicator {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     background: #666;
 }
 
-.sql-agent-status-indicator.connected {
+.mvu-status-indicator.active {
     background: #4CAF50;
 }
 
-.sql-agent-status-indicator.error {
+.mvu-status-indicator.error {
     background: #f44336;
 }
 
-.sql-agent-btn {
+.mvu-btn {
     background: #4a4a4a;
     color: #fff;
     border: none;
@@ -38,16 +38,16 @@
     font-size: 14px;
 }
 
-.sql-agent-btn:hover {
+.mvu-btn:hover {
     background: #5a5a5a;
 }
 
-.sql-agent-btn:disabled {
+.mvu-btn:disabled {
     background: #333;
     cursor: not-allowed;
 }
 
-.sql-agent-input {
+.mvu-input {
     width: 100%;
     background: #333;
     color: #fff;
@@ -58,7 +58,7 @@
     font-family: monospace;
 }
 
-.sql-agent-result {
+.mvu-result {
     background: #1a1a1a;
     color: #0f0;
     padding: 10px;
@@ -70,22 +70,38 @@
     white-space: pre-wrap;
 }
 
-.sql-agent-error {
+.mvu-error {
     color: #f44336;
 }
 
-.sql-agent-memory {
+.mvu-memory-list {
     background: #262626;
     padding: 10px;
     border-radius: 4px;
     margin-top: 10px;
 }
 
-.sql-agent-memory-item {
+.mvu-memory-item {
     padding: 5px;
     border-bottom: 1px solid #333;
 }
 
-.sql-agent-memory-item:last-child {
+.mvu-memory-item:last-child {
     border-bottom: none;
+}
+
+.mvu-variable {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-bottom: 1px solid #333;
+}
+
+.mvu-variable-key {
+    font-weight: bold;
+    color: #4a9eff;
+}
+
+.mvu-variable-value {
+    color: #fff;
 }

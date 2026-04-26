@@ -1,57 +1,48 @@
-<div class="sql-agent-panel">
-    <h3>SQL Agent Settings</h3>
+<div class="mvu-panel">
+    <h3>MVU-SQLite Memory Settings</h3>
     
-    <div class="sql-agent-status">
-        <div id="sql-agent-status-indicator" class="sql-agent-status-indicator"></div>
-        <span id="sql-agent-status-text">Initializing...</span>
+    <div class="mvu-status">
+        <div id="mvu-status-indicator" class="mvu-status-indicator"></div>
+        <span id="mvu-status-text">Initializing...</span>
     </div>
     
     <div class="form-group">
-        <label for="sql-agent-db-path">Database Path:</label>
-        <input type="text" id="sql-agent-db-path" class="sql-agent-input" 
-               value="./server/db/default.db" placeholder="Path to SQLite database">
+        <label>Character ID:</label>
+        <input type="text" id="mvu-character-id" class="mvu-input" value="default" placeholder="Character ID">
     </div>
     
     <div class="form-group">
-        <label for="sql-agent-query">Quick Query:</label>
-        <input type="text" id="sql-agent-query" class="sql-agent-input" 
-               placeholder="Enter SQL query...">
-        <button id="sql-agent-execute" class="sql-agent-btn">Execute</button>
+        <label>Variable Operations:</label>
+        <input type="text" id="mvu-var-key" class="mvu-input" placeholder="Variable name">
+        <input type="text" id="mvu-var-value" class="mvu-input" placeholder="Variable value">
+        <button id="mvu-set-var" class="mvu-btn">Set Variable</button>
+        <button id="mvu-get-var" class="mvu-btn">Get Variable</button>
+        <button id="mvu-get-all" class="mvu-btn">Get All</button>
     </div>
-    
-    <div class="form-group">
-        <label>Import Data:</label>
-        <select id="sql-agent-import-format" class="sql-agent-input">
-            <option value="csv">CSV</option>
-            <option value="json">JSON</option>
-            <option value="markdown">Markdown</option>
-            <option value="logs">Logs</option>
-        </select>
-        <textarea id="sql-agent-import-content" class="sql-agent-input" rows="4" 
-                  placeholder="Paste data to import..."></textarea>
-        <input type="text" id="sql-agent-import-table" class="sql-agent-input" 
-               placeholder="Table name">
-        <button id="sql-agent-import" class="sql-agent-btn">Import</button>
-    </div>
-    
-    <div class="form-group">
-        <label>Export Format:</label>
-        <select id="sql-agent-export-format" class="sql-agent-input">
-            <option value="json">JSON</option>
-            <option value="csv">CSV</option>
-            <option value="markdown">Markdown</option>
-        </select>
-        <button id="sql-agent-export" class="sql-agent-btn">Export Last Result</button>
-    </div>
-    
-    <div id="sql-agent-result" class="sql-agent-result" style="display: none;"></div>
     
     <div class="form-group">
         <label>Memory Search:</label>
-        <input type="text" id="sql-agent-search" class="sql-agent-input" 
-               placeholder="Search memory...">
-        <button id="sql-agent-search-btn" class="sql-agent-btn">Search</button>
+        <input type="text" id="mvu-search" class="mvu-input" placeholder="Search memory...">
+        <button id="mvu-search-btn" class="mvu-btn">Search</button>
     </div>
     
-    <div id="sql-agent-memory-list" class="sql-agent-memory"></div>
+    <div class="form-group">
+        <label>Store Memory:</label>
+        <input type="text" id="mvu-memory-content" class="mvu-input" placeholder="Memory content">
+        <input type="text" id="mvu-memory-tag" class="mvu-input" placeholder="Tag (optional)">
+        <button id="mvu-store-memory" class="mvu-btn">Store</button>
+    </div>
+    
+    <div class="form-group">
+        <label>Snapshots:</label>
+        <input type="text" id="mvu-snapshot-name" class="mvu-input" placeholder="Snapshot name">
+        <input type="text" id="mvu-snapshot-desc" class="mvu-input" placeholder="Description (optional)">
+        <button id="mvu-create-snapshot" class="mvu-btn">Create Snapshot</button>
+        <button id="mvu-list-snapshots" class="mvu-btn">List Snapshots</button>
+    </div>
+    
+    <div id="mvu-result" class="mvu-result" style="display: none;"></div>
+    
+    <div id="mvu-memory-list" class="mvu-memory-list"></div>
+    <div id="mvu-variable-list" class="mvu-memory-list"></div>
 </div>

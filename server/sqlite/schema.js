@@ -1,54 +1,62 @@
-function inferType(value) {
-    if (value === null || value === undefined) {
-        return "TEXT";
-    }
-    if (typeof value === "number") {
-        if (Number.isInteger(value)) {
-            return "INTEGER";
+const TABLES = {
+    variable_state: `
+        CREATE TABLE IF NOT EXISTS variable_state (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            variable_name TEXT UNIQUE NOT NULL,
+            variable_value TEXT,
+            character_id TEXT DEFAULT 'default',
+            updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    `,
+    variable_history: `
+        CREATE TABLE IF NOT EXISTS variable_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            variable_name TEXT NOT NULL,
+            old_value TEXT,
+            new_value TEXT,
+            character_id TEXT DEFAULT 'default',
+            timestamp TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    `,
+    snapshots: `
+        CREATE TABLE IF NOT EXISTS snapshots (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            description TEXT,
+            character_id TEXT DEFAULT 'default',
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            data TEXT NOT NULL
+        )
+    `,
+    fts_memory: `
+        CREATE VIRTUAL TABLE IF NOT EXISTS fts_memory USING fts5(
+            content,
+            tag,
+            context,
+            character_id DEFAULT 'default'
+        )
+    `
+};
+
+function initSchema(database) {
+    const results = [];
+    for (const [name, sql] of Object.entries(TABLES)) {
+        try {
+            database.run(sql);
+            results.push({ table: name, success: true });
+        } catch (e) {
+            results.push({ table: name, success: false, error: e.message });
         }
-        return "REAL";
     }
-    return "TEXT";
+    return results;
 }
 
-function generateCreateTableSQL(tableName, data) {
-    if (!data || typeof data !== "object") {
-        throw new Error("Data must be a non-null object");
-    }
-
-    const columns = [];
-    for (const [key, value] of Object.entries(data)) {
-        const safeKey = key.replace(/[^a-zA-Z0-9_]/g, "_");
-        columns.push(`${safeKey} ${inferType(value)}`);
-    }
-
-    return `CREATE TABLE IF NOT EXISTS ${tableName} (${columns.join(", ")})`;
-}
-
-function generateInsertSQL(tableName, data) {
-    if (!data || typeof data !== "object") {
-        throw new Error("Data must be a non-null object");
-    }
-
-    const keys = [];
-    const placeholders = [];
-    const values = [];
-
-    for (const [key, value] of Object.entries(data)) {
-        const safeKey = key.replace(/[^a-zA-Z0-9_]/g, "_");
-        keys.push(safeKey);
-        placeholders.push("?");
-        values.push(value);
-    }
-
-    return {
-        sql: `INSERT INTO ${tableName} (${keys.join(", ")}) VALUES (${placeholders.join(", ")})`,
-        values
-    };
+function getTableSQL(tableName) {
+    return TABLES[tableName];
 }
 
 module.exports = {
-    inferType,
-    generateCreateTableSQL,
-    generateInsertSQL
+    TABLES,
+    initSchema,
+    getTableSQL
 };

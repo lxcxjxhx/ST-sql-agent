@@ -1,52 +1,127 @@
-const { query, getDb } = require("../sqlite/engine");
+const { query } = require('../sqlite/engine');
 
-function createMemoryTable(dbPath) {
-    query(`CREATE VIRTUAL TABLE IF NOT EXISTS memory USING fts5(content, tag)`, dbPath);
+let ftsAvailable = false;
+
+function checkFtsAvailability() {
+    try {
+        query('SELECT COUNT(*) FROM fts_memory', []);
+        ftsAvailable = true;
+    } catch (e) {
+        ftsAvailable = false;
+    }
+    return ftsAvailable;
 }
 
-function insertMemory(content, dbPath, tag = "") {
+async function insertMemory(content, tag = '', context = '', characterId = 'default') {
     try {
-        const safeContent = content.replace(/"/g, '""');
-        const safeTag = tag.replace(/"/g, '""');
-        query(`INSERT INTO memory (content, tag) VALUES ("${safeContent}", "${safeTag}")`, dbPath);
-        return { success: true, message: "Memory stored" };
+        if (!ftsAvailable) checkFtsAvailability();
+
+        if (ftsAvailable) {
+            const safeContent = content.replace(/"/g, '""');
+            const safeTag = tag.replace(/"/g, '""');
+            const safeContext = context.replace(/"/g, '""');
+            query(
+                'INSERT INTO fts_memory (content, tag, context, character_id) VALUES (?, ?, ?, ?)',
+                [safeContent, safeTag, safeContext, characterId]
+            );
+        } else {
+            const id = Date.now();
+            const stored = JSON.parse(localStorage.getItem('fts_memory') || '[]');
+            stored.push({ id, content, tag, context, character_id: characterId, created_at: new Date().toISOString() });
+            localStorage.setItem('fts_memory', JSON.stringify(stored));
+        }
+
+        return { success: true, content: content.substring(0, 50) };
     } catch (e) {
         return { success: false, error: e.message };
     }
 }
 
-function searchMemory(searchQuery, dbPath) {
+function searchMemory(searchQuery, characterId = 'default', limit = 20) {
     try {
-        const safeQuery = searchQuery.replace(/"/g, '""');
-        const results = query(`SELECT * FROM memory WHERE content MATCH "${safeQuery}"`, dbPath);
-        return { success: true, data: results };
+        if (!ftsAvailable) checkFtsAvailability();
+
+        if (ftsAvailable) {
+            const safeQuery = searchQuery.replace(/"/g, '""');
+            const results = query(
+                'SELECT * FROM fts_memory WHERE content MATCH ? AND character_id = ? LIMIT ?',
+                [safeQuery, characterId, limit]
+            );
+            return { success: true, data: results };
+        } else {
+            const stored = JSON.parse(localStorage.getItem('fts_memory') || '[]');
+            const filtered = stored.filter(m =>
+                m.character_id === characterId &&
+                (m.content.includes(searchQuery) || m.tag.includes(searchQuery))
+            ).slice(0, limit);
+            return { success: true, data: filtered };
+        }
     } catch (e) {
         return { success: false, error: e.message };
     }
 }
 
-function deleteMemory(id, dbPath) {
+function deleteMemory(rowId, characterId = 'default') {
     try {
-        query(`DELETE FROM memory WHERE rowid = ${id}`, dbPath);
-        return { success: true, message: "Memory deleted" };
+        if (!ftsAvailable) checkFtsAvailability();
+
+        if (ftsAvailable) {
+            query('DELETE FROM fts_memory WHERE rowid = ? AND character_id = ?', [rowId, characterId]);
+        } else {
+            const stored = JSON.parse(localStorage.getItem('fts_memory') || '[]');
+            const filtered = stored.filter(m => !(m.id === rowId && m.character_id === characterId));
+            localStorage.setItem('fts_memory', JSON.stringify(filtered));
+        }
+
+        return { success: true };
     } catch (e) {
         return { success: false, error: e.message };
     }
 }
 
-function getAllMemory(dbPath) {
+function getAllMemory(characterId = 'default', limit = 100) {
     try {
-        const results = query(`SELECT rowid, content, tag FROM memory`, dbPath);
-        return { success: true, data: results };
+        if (!ftsAvailable) checkFtsAvailability();
+
+        if (ftsAvailable) {
+            const results = query(
+                'SELECT rowid, content, tag, context, created_at FROM fts_memory WHERE character_id = ? LIMIT ?',
+                [characterId, limit]
+            );
+            return { success: true, data: results };
+        } else {
+            const stored = JSON.parse(localStorage.getItem('fts_memory') || '[]');
+            const filtered = stored.filter(m => m.character_id === characterId).slice(0, limit);
+            return { success: true, data: filtered };
+        }
+    } catch (e) {
+        return { success: false, error: e.message };
+    }
+}
+
+function clearMemory(characterId = 'default') {
+    try {
+        if (!ftsAvailable) checkFtsAvailability();
+
+        if (ftsAvailable) {
+            query('DELETE FROM fts_memory WHERE character_id = ?', [characterId]);
+        } else {
+            const stored = JSON.parse(localStorage.getItem('fts_memory') || '[]');
+            const filtered = stored.filter(m => m.character_id !== characterId);
+            localStorage.setItem('fts_memory', JSON.stringify(filtered));
+        }
+
+        return { success: true };
     } catch (e) {
         return { success: false, error: e.message };
     }
 }
 
 module.exports = {
-    createMemoryTable,
     insertMemory,
     searchMemory,
     deleteMemory,
-    getAllMemory
+    getAllMemory,
+    clearMemory,
+    checkFtsAvailability
 };
