@@ -1,0 +1,91 @@
+.sql-agent-panel {
+    padding: 10px;
+    background: #2a2a2a;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.sql-agent-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.sql-agent-status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #666;
+}
+
+.sql-agent-status-indicator.connected {
+    background: #4CAF50;
+}
+
+.sql-agent-status-indicator.error {
+    background: #f44336;
+}
+
+.sql-agent-btn {
+    background: #4a4a4a;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 14px;
+}
+
+.sql-agent-btn:hover {
+    background: #5a5a5a;
+}
+
+.sql-agent-btn:disabled {
+    background: #333;
+    cursor: not-allowed;
+}
+
+.sql-agent-input {
+    width: 100%;
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 5px 0;
+    font-family: monospace;
+}
+
+.sql-agent-result {
+    background: #1a1a1a;
+    color: #0f0;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+.sql-agent-error {
+    color: #f44336;
+}
+
+.sql-agent-memory {
+    background: #262626;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.sql-agent-memory-item {
+    padding: 5px;
+    border-bottom: 1px solid #333;
+}
+
+.sql-agent-memory-item:last-child {
+    border-bottom: none;
+}
